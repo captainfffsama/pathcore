@@ -46,6 +46,8 @@ class FacilityLocationMethod(object):
             self._update_min_distance(start_idx,x)
             center.append(start_idx)
 
+        print("max distance is:{}".format(max(self.min_distance)))
+
         return center
 
         

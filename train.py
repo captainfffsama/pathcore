@@ -17,20 +17,20 @@ from model import WideResnet502
 from memory_bank import MemoryBank
 """
 
-/home/chiebotgpuhq/MyCode/dataset/anomaly_hxq/hxq_tiantai/crop/
 """
 
 def parse_args():
     parser=argparse.ArgumentParser()
-    parser.add_argument("--img_dir",type=str,default="/home/chiebotgpuhq/MyCode/dataset/mvtec/data/hazelnut/train/good/")
-    parser.add_argument("--batch_size",type=int,default=32)
-    parser.add_argument("--compress_rate",type=float,default=0.001)
+    parser.add_argument("--img_dir",type=str,default="/home/chiebotgpuhq/MyCode/dataset/anomaly_hxq/hxq_tiantai/crop/")
+    parser.add_argument("--batch_size",type=int,default=8)
+    parser.add_argument("--compress_rate",type=float,default=0.01)
     parser.add_argument("--save_dir",type=str,default="/home/chiebotgpuhq/MyCode/python/pytorch/pathcore/compare/")
+    parser.add_argument("--input_size",type=tuple,default=(416,416))
     args=parser.parse_args()
     return args
 
 def train(args):
-    dataset=HxqData(args.img_dir)
+    dataset=HxqData(args.img_dir,args.input_size)
     dataloader=DataLoader(dataset,batch_size=args.batch_size,shuffle=True)
 
     net=WideResnet502()

@@ -1,5 +1,7 @@
+from typing import Union
 import torch
 import torch.nn.functional as F
+import numpy as np
 
 def embedding_concat(x, y):
     # from https://github.com/xiahaifeng1995/PaDiM-Anomaly-Detection-Localization-master
@@ -16,10 +18,19 @@ def embedding_concat(x, y):
 
     return z
 
-def reshape_embedding(embedding):
-    embedding_list = []
-    for k in range(embedding.shape[0]):
-        for i in range(embedding.shape[2]):
-            for j in range(embedding.shape[3]):
-                embedding_list.append(embedding[k, :, i, j])
-    return embedding_list
+
+def normalization(data):
+    _range = np.max(data) - np.min(data)
+    return (data - np.min(data)) / _range *255
+
+def norm2npimg(x:Union[torch.Tensor,np.ndarray]) -> np.ndarray:
+    if isinstance(x,torch.Tensor):
+        x=x.detach().cpu().numpy()
+    x=x.squeeze()
+    assert len(x.shape) <4,"x must be have less 4 dim"
+    if 3==len(x.shape) and (x.shape[0]==1 or x.shape[0]==3):
+        x=np.transpose(x,(1,2,0))
+    x=normalization(x)
+    x=x.astype(np.uint8)
+    return x
+

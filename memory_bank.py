@@ -10,6 +10,7 @@ import numpy as np
 from sklearn.random_projection import SparseRandomProjection
 from sklearn.neighbors import NearestNeighbors
 import faiss
+from sklearn.metrics import pairwise_distances
 
 from center_cluster import FacilityLocationMethod
 
@@ -24,7 +25,17 @@ class MemoryBank(object):
 
         self.memory_bank_dataset=None
         self.input_size=input_size
+        self._max_dis=None
 
+    @property
+    def max_dis(self):
+        assert hasattr(self,"memory_bank"),"must init self.memory_bank first"
+        if self._max_dis is None:
+            print("first ask max distance,computing")
+            pair_dist=pairwise_distances(self.memory_bank,self.memory_bank,metric='euclidean')
+            self._max_dis=pair_dist.max()
+
+        return self._max_dis
 
     def bank_generate(self,embedding,center_num,save_dir):
         if isinstance(embedding,list):
@@ -58,8 +69,7 @@ class MemoryBank(object):
         if not query.flags.c_contiguous:
             query=np.ascontiguousarray(query)
         D,I=self.memory_bank_dataset.search(query,k)
+        D=np.sqrt(D)
         # D, _ = self.memory_bank_dataset.kneighbors(query)
-        score_patch=np.load("/home/chiebotgpuhq/MyCode/python/pytorch/pathcore/compare/score_patches.npy")
-        print("score_patch diff is:",np.mean(score_patch-D))
         score,anomaly_map= self._generate_score_map(D,query)
         return score,anomaly_map

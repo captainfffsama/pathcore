@@ -20,13 +20,12 @@ def get_all_file_path(file_dir:str,filter_:tuple=('.jpg','.png')) -> list:
             if os.path.splitext(filename)[1] in filter_ ]
 
 class HxqData(Dataset):
-    def __init__(self,img_dir:str,img_shape:Union[list,int,tuple]=(256,256)):
+    def __init__(self,img_dir:str,img_shape:Union[list,int,tuple]=(416,416)):
         super(HxqData, self).__init__()
         self.all_img_list=get_all_file_path(img_dir)
         self.img_transforms=transforms.Compose([
             transforms.Resize(img_shape),
             transforms.ToTensor(),
-            transforms.CenterCrop(224),
 
             transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                  std=[0.229, 0.224, 0.225])])
