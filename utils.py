@@ -15,3 +15,11 @@ def embedding_concat(x, y):
     z = F.fold(z, kernel_size=s, output_size=(H1, W1), stride=s)
 
     return z
+
+def reshape_embedding(embedding):
+    embedding_list = []
+    for k in range(embedding.shape[0]):
+        for i in range(embedding.shape[2]):
+            for j in range(embedding.shape[3]):
+                embedding_list.append(embedding[k, :, i, j])
+    return embedding_list

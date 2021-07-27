@@ -15,13 +15,17 @@ from data import HxqData
 from model import WideResnet502
 
 from memory_bank import MemoryBank
+"""
+
+/home/chiebotgpuhq/MyCode/dataset/anomaly_hxq/hxq_tiantai/crop/
+"""
 
 def parse_args():
     parser=argparse.ArgumentParser()
-    parser.add_argument("--img_dir",type=str,default="/home/chiebotgpuhq/MyCode/dataset/anomaly_hxq/hxq_tiantai/crop")
-    parser.add_argument("--batch_size",type=int,default=4)
+    parser.add_argument("--img_dir",type=str,default="/home/chiebotgpuhq/MyCode/dataset/mvtec/data/hazelnut/train/good/")
+    parser.add_argument("--batch_size",type=int,default=32)
     parser.add_argument("--compress_rate",type=float,default=0.001)
-    parser.add_argument("--save_dir",type=str,default="/home/chiebotgpuhq/MyCode/dataset/anomaly_hxq/hxq_tiantai/")
+    parser.add_argument("--save_dir",type=str,default="/home/chiebotgpuhq/MyCode/python/pytorch/pathcore/compare/")
     args=parser.parse_args()
     return args
 
@@ -38,7 +42,9 @@ def train(args):
     with torch.no_grad():
         for data in tqdm(dataloader):
             z=net(data)
-            embedding_bank.append(z.detach().view(-1,z.shape[1]).cpu().numpy())
+            features=z.detach().cpu().numpy()
+            features=np.transpose(features,(0,2,3,1))
+            embedding_bank.append(features.reshape(-1,features.shape[-1]))
 
     print("get features done,generate memory bank")
     embedding_bank=np.concatenate(embedding_bank,axis=0)

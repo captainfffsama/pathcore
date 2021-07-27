@@ -9,7 +9,7 @@ from utils import embedding_concat
 class WideResnet502(nn.Module):
     def __init__(self):
         super(WideResnet502, self).__init__()
-        self._model=models.wide_resnet50_2()
+        self._model=models.wide_resnet50_2(pretrained=True)
         self.conv1=self._model.conv1
         self.bn1=self._model.bn1
         self.relu=self._model.relu
