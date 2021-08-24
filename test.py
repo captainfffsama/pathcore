@@ -25,7 +25,7 @@ import debug_tools as D
 
 def parse_args():
     parser=argparse.ArgumentParser()
-    parser.add_argument("--img_dir",type=str,default="/home/chiebotgpuhq/MyCode/dataset/anomaly_hxq/hxq_tiantai/test_crop/")
+    parser.add_argument("--img_dir",type=str,default="/data/anomaly_hxq/anomaly210804/annomaly/hxq")
     parser.add_argument("--batch_size",type=int,default=2)
     parser.add_argument("--memory_bank",type=str,default="/home/chiebotgpuhq/MyCode/python/pytorch/pathcore/compare/memory_bank.npy")
     parser.add_argument("--input_size",type=tuple,default=(416,416))
@@ -48,6 +48,8 @@ def test(args):
 
     memory_bank_dealer=MemoryBank(args.memory_bank,(args.input_size[0]//8,args.input_size[1]//8))
     print("max distance is:",memory_bank_dealer.max_dis)
+    print("min distance is:",memory_bank_dealer.min_dis)
+    print("mean distance is:",memory_bank_dealer.mean_dis)
     net=WideResnet502()
     net.eval()
     print("model init done")
@@ -61,7 +63,7 @@ def test(args):
                 score,anomaly_map=memory_bank_dealer.get_score_map(img_z,9)
                 print("score is:",score)
                 result=generate_result_show_img(norm2npimg(data[idx]),anomaly_map)
-                D.show_img(result)
+                D.show_img([result,norm2npimg(data[idx])[:,:,::-1]])
 
 
 

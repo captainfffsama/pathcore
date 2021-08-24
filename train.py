@@ -21,7 +21,7 @@ from memory_bank import MemoryBank
 
 def parse_args():
     parser=argparse.ArgumentParser()
-    parser.add_argument("--img_dir",type=str,default="/home/chiebotgpuhq/MyCode/dataset/anomaly_hxq/hxq_tiantai/crop/")
+    parser.add_argument("--img_dir",type=str,default="/data/anomaly_hxq/anomaly210804/nomaly/hxq")
     parser.add_argument("--batch_size",type=int,default=8)
     parser.add_argument("--compress_rate",type=float,default=0.01)
     parser.add_argument("--save_dir",type=str,default="/home/chiebotgpuhq/MyCode/python/pytorch/pathcore/compare/")

@@ -14,6 +14,8 @@ from sklearn.metrics import pairwise_distances
 
 from center_cluster import FacilityLocationMethod
 
+from utils import timeblock
+
 import debug_tools as DT
 
 class MemoryBank(object):
@@ -25,24 +27,41 @@ class MemoryBank(object):
 
         self.memory_bank_dataset=None
         self.input_size=input_size
-        self._max_dis=None
+        self.pair_dist=None
 
     @property
     def max_dis(self):
         assert hasattr(self,"memory_bank"),"must init self.memory_bank first"
-        if self._max_dis is None:
+        if self.pair_dist is None:
             print("first ask max distance,computing")
-            pair_dist=pairwise_distances(self.memory_bank,self.memory_bank,metric='euclidean')
-            self._max_dis=pair_dist.max()
+            self.pair_dist=pairwise_distances(self.memory_bank,self.memory_bank,metric='euclidean')
+        return self.pair_dist.max()
 
-        return self._max_dis
+    @property
+    def mean_dis(self):
+        assert hasattr(self,"memory_bank"),"must init self.memory_bank first"
+        if self.pair_dist is None:
+            print("first ask max distance,computing")
+            self.pair_dist=pairwise_distances(self.memory_bank,self.memory_bank,metric='euclidean')
+        return np.mean(self.pair_dist)
+
+    @property
+    def min_dis(self):
+        assert hasattr(self,"memory_bank"),"must init self.memory_bank first"
+        if self.pair_dist is None:
+            print("first ask max distance,computing")
+            self.pair_dist=pairwise_distances(self.memory_bank,self.memory_bank,metric='euclidean')
+        return self.pair_dist[self.pair_dist!=0].min()
+
 
     def bank_generate(self,embedding,center_num,save_dir):
         if isinstance(embedding,list):
             embedding=np.array(embedding)
         # 生成映射矩阵
-        self.features=self.dim_reduction.fit_transform(embedding)
-        centers_idx_list=self.center_clus(self.features,center_num)
+        with timeblock("dim_reduce spend time:"):
+            self.features=self.dim_reduction.fit_transform(embedding)
+        with timeblock("center clus spend time:"):
+            centers_idx_list=self.center_clus(self.features,center_num)
         self.memory_bank=embedding[centers_idx_list]
 
         np.save(os.path.join(save_dir,'memory_bank.npy'),self.memory_bank)

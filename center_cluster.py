@@ -9,6 +9,7 @@ import random
 import numpy as np
 from sklearn.metrics import pairwise_distances
 
+# FIXME: 计算效率很低,需要优化
 class FacilityLocationMethod(object):
     def __init__(self):
         # self.min_distance中记录了每个点到自己对应的center的最近距离

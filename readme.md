@@ -1,13 +1,19 @@
-# Towards Total Recall in Industrial Anomaly Detection 
+
+# Towards Total Recall in Industrial Anomaly Detection
+
 Here just a unofficial implement of PatchCore.
 
-The original paper can be find on: https://arxiv.org/abs/2106.08265
+The original paper can be find on: <https://arxiv.org/abs/2106.08265>
 
 # requirements
-opencv 
+
+opencv
 pytorch
 faiss
 scikit-learn
+tqdm
+matplotlib
 
 # Code Reference
-https://github.com/hcw-00/PatchCore_anomaly_detection
+
+<https://github.com/hcw-00/PatchCore_anomaly_detection>

@@ -1,3 +1,5 @@
+import time
+from contextlib import contextmanager
 from typing import Union
 import torch
 import torch.nn.functional as F
@@ -18,6 +20,18 @@ def embedding_concat(x, y):
 
     return z
 
+@contextmanager
+def timeblock(label:str = '\033[1;34mSpend time:\033[0m'):
+    r'''上下文管理测试代码块运行时间,需要
+        import time
+        from contextlib import contextmanager
+    '''
+    start = time.perf_counter()
+    try:
+        yield
+    finally:
+        end = time.perf_counter()
+        print('\033[1;34m{} : {}\033[0m'.format(label, end - start))
 
 def normalization(data):
     _range = np.max(data) - np.min(data)
