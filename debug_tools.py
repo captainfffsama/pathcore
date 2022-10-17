@@ -14,7 +14,7 @@ def normalization(data):
     return (data - np.min(data)) / _range *255
 
 
-def show_img(img_ori,cvreader=True):
+def show_img(img_ori,text=None,cvreader=True):
     img=deepcopy(img_ori)
     if isinstance(img, list) or isinstance(img, tuple):
         img_num = len(img)
@@ -30,10 +30,14 @@ def show_img(img_ori,cvreader=True):
             else:
                 axs[idx % row_n].imshow(img_)
                 axs[idx % row_n].set_title(str(idx))
+        if text:
+            plt.text(0,0,text,fontsize=15)
         plt.show()
     elif isinstance(img,torch.Tensor) or isinstance(img,np.ndarray):
         img=show_tensor(img,cvreader)
         plt.imshow(img)
+        if text:
+            plt.text(0,0,text,fontsize=15)
         plt.show()
     else:
         if hasattr(img,'show'):
@@ -51,7 +55,7 @@ def show_tensor(img,cvreader):
     if isinstance(img,torch.Tensor):
         img=img.detach().cpu().numpy().squeeze()
     if 1==img.max():
-        img=img.astype(np.float) 
+        img=img.astype(np.float)
     if img.shape[0] == 1 or img.shape[0] == 3:
         img = np.transpose(img, (1, 2, 0))
     if img.min() <0 or img.max() >255:

@@ -4,6 +4,7 @@
 @Date: 2021年 07月 20日 星期二 10:32:12 CST
 @Description: path core 训练
 '''
+
 import argparse
 
 import torch
@@ -21,7 +22,7 @@ from memory_bank import MemoryBank
 
 def parse_args():
     parser=argparse.ArgumentParser()
-    parser.add_argument("--img_dir",type=str,default="/data/anomaly_hxq/anomaly210804/nomaly/hxq")
+    parser.add_argument("--img_dir",type=str,default="/data/own_dataset/anomaly_hxq/anomaly210804/nomaly/meter3")
     parser.add_argument("--batch_size",type=int,default=8)
     parser.add_argument("--compress_rate",type=float,default=0.01)
     parser.add_argument("--save_dir",type=str,default="/home/chiebotgpuhq/MyCode/python/pytorch/pathcore/compare/")

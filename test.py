@@ -25,7 +25,7 @@ import debug_tools as D
 
 def parse_args():
     parser=argparse.ArgumentParser()
-    parser.add_argument("--img_dir",type=str,default="/data/anomaly_hxq/anomaly210804/annomaly/hxq")
+    parser.add_argument("--img_dir",type=str,default="/data/own_dataset/anomaly_hxq/anomaly210804/annomaly/meter3")
     parser.add_argument("--batch_size",type=int,default=2)
     parser.add_argument("--memory_bank",type=str,default="/home/chiebotgpuhq/MyCode/python/pytorch/pathcore/compare/memory_bank.npy")
     parser.add_argument("--input_size",type=tuple,default=(416,416))
@@ -63,7 +63,7 @@ def test(args):
                 score,anomaly_map=memory_bank_dealer.get_score_map(img_z,9)
                 print("score is:",score)
                 result=generate_result_show_img(norm2npimg(data[idx]),anomaly_map)
-                D.show_img([result,norm2npimg(data[idx])[:,:,::-1]])
+                D.show_img([result,norm2npimg(data[idx])[:,:,::-1]],text=str(score))
 
 
 
